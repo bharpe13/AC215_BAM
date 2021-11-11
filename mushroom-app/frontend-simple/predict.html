@@ -99,8 +99,15 @@
                     <span class="mushroom_type" id="mushroom_type"></span>
                 </div>
             </div>
+            <div>
+                <label for="str">Enter Base Text:</label>
+                <input type="text" id="baseStr" name="str" size="40">
+            </div>
+           <div>
             <label for="str">Enter Transformation Text:</label>
-            <input type="text" id="str" name="str" size="40">
+            <input type="text" id="transformStr" name="str" size="40">
+           </div>
+            
         </div>
         <div>
             <img id="transformed_image">
@@ -115,7 +122,8 @@
 
     // file input
     var input_file = document.getElementById("input_file");
-    var input_string = document.getElementById("str");
+    var base_string = document.getElementById("baseStr");
+    var transform_string = document.getElementById("transformStr");
     // var prediction_label = document.getElementById("prediction_label");
     // var prediction_accuracy = document.getElementById("prediction_accuracy");
     // var mushroom_type = document.getElementById("mushroom_type");
@@ -139,7 +147,8 @@
         // Post the image to the /predict API
         var formData = new FormData();
         formData.append("file", input_file.files[0]);
-        formData.append("string", input_string.value);
+        formData.append("neutral", base_string.value);
+        formData.append("target", transform_string.value);
         axios.post('/predict', formData, {
             headers: {
                 'Content-Type': 'multipart/form-data'

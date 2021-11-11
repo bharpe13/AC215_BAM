@@ -16,7 +16,8 @@ const Home = (props) => {
     // Component States
     const [image, setImage] = useState(null);
     const [prediction, setPrediction] = useState(null);
-    const [text, setText] = useState("");
+    const [transformText, setTransformText] = useState("");
+    const [baseText, setBaseText] = useState("");
     const [newimage, setNewimage] = useState(null);
 
     // Setup Component
@@ -29,8 +30,12 @@ const Home = (props) => {
         inputFile.current.click();
     }
 
-    const handleTextChange = (event) => {
-        setText(event.target.value);
+    const handleBaseTextChange = (event) => {
+        setBaseText(event.target.value);
+    }
+
+    const handleTransformTextChange = (event) => {
+        setTransformText(event.target.value);
     }
 
     const handleOnChange = (event) => {
@@ -39,7 +44,10 @@ const Home = (props) => {
 
         var formData = new FormData();
         formData.append("file", event.target.files[0]);
-        formData.append("string", text);
+        formData.append("neutral", baseText);
+        formData.append("target", transformText);
+        console.log(baseText);
+        console.log(transformText)
         // setNewimage(URL.createObjectURL(event.target.files[0]));
         DataService.Predict(formData)
             .then(function (response) {
@@ -70,9 +78,13 @@ const Home = (props) => {
                     </div>
                     <form>
                         <label>
+                            Enter Neutral Text:
+                        </label>
+                            <input type="text" value={baseText} onChange={handleBaseTextChange} />
+                            <label>
                             Enter Transformation Text:
                         </label>
-                            <input type="text" value={text} onChange={handleTextChange} />
+                            <input type="text" value={transformText} onChange={handleTransformTextChange} />
                         </form>
                     <div><img src={newimage} className={classes.photo} /></div>
                 </Container>
