@@ -40,6 +40,10 @@ const styles = theme => ({
     preview: {
         width: "100%",
     },
+    photo: {
+        height: "800px",
+        width: "800px"
+    },
     help: {
         color: "#302f2f"
     },

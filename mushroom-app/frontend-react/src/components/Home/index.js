@@ -16,6 +16,8 @@ const Home = (props) => {
     // Component States
     const [image, setImage] = useState(null);
     const [prediction, setPrediction] = useState(null);
+    const [text, setText] = useState("");
+    const [newimage, setNewimage] = useState(null);
 
     // Setup Component
     useEffect(() => {
@@ -26,16 +28,24 @@ const Home = (props) => {
     const handleImageUploadClick = () => {
         inputFile.current.click();
     }
+
+    const handleTextChange = (event) => {
+        setText(event.target.value);
+    }
+
     const handleOnChange = (event) => {
         console.log(event.target.files);
         setImage(URL.createObjectURL(event.target.files[0]));
 
         var formData = new FormData();
         formData.append("file", event.target.files[0]);
+        formData.append("string", text);
+        // setNewimage(URL.createObjectURL(event.target.files[0]));
         DataService.Predict(formData)
             .then(function (response) {
                 console.log(response.data);
                 setPrediction(response.data);
+                setNewimage(URL.createObjectURL(response.data.new_image));
             })
     }
 
@@ -43,16 +53,6 @@ const Home = (props) => {
         <div className={classes.root}>
             <main className={classes.main}>
                 <Container maxWidth="md" className={classes.container}>
-                    {prediction &&
-                        <Typography variant="h4" gutterBottom align='center'>
-                            {!prediction.poisonous &&
-                                <span className={classes.safe}>{prediction.prediction_label + " (" + prediction["accuracy"] + "%)"}</span>
-                            }
-                            {prediction.poisonous &&
-                                <span className={classes.poisonous}>{prediction.prediction_label + " (" + prediction["accuracy"] + "%)"}&nbsp;&nbsp;Poisonous</span>
-                            }
-                        </Typography>
-                    }
                     <div className={classes.dropzone} onClick={() => handleImageUploadClick()}>
                         <input
                             type="file"
@@ -68,6 +68,13 @@ const Home = (props) => {
                         <div><img className={classes.preview} src={image} /></div>
                         <div className={classes.help}>Click to take a picture or upload...</div>
                     </div>
+                    <form>
+                        <label>
+                            Enter Transformation Text:
+                        </label>
+                            <input type="text" value={text} onChange={handleTextChange} />
+                        </form>
+                    <div><img src={newimage} className={classes.photo} /></div>
                 </Container>
             </main>
         </div>
