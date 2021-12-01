@@ -1,0 +1,22 @@
+all:
+    vars:
+      ansible_user: sa_116881295647391153647
+      ansible_ssh_private_key_file: "../secrets/ssh-key-deployment"
+      gcp_service_account_file: "../secrets/deployment.json"
+      gcp_service_account_email: "deployment2@long-velocity-328818.iam.gserviceaccount.com"
+      gcp_auth_kind: "serviceaccount"
+      gcp_scopes: "https://www.googleapis.com/auth/compute"
+      gcp_project: "long-velocity-328818"
+      gcp_region: "europe-west1"
+      gcp_zone: "europe-west1-b"
+      docker_network_name: "appnetwork"
+      persistent_disk_name: "style-clip-disk"
+      persistent_disk_size: 200
+      machine_instance_name: "style-clip"
+      machine_type: "n1-highmem-4"
+      machine_disk_size: 200
+
+    children:
+        appserver:
+            hosts:
+                34.76.92.116

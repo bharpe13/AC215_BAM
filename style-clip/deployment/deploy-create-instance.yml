@@ -1,0 +1,106 @@
+- name: Create App Application Machine
+  hosts: localhost
+  environment:
+    GCP_AUTH_KIND: "{{gcp_auth_kind}}"
+    GCP_SERVICE_ACCOUNT_FILE: "{{ gcp_service_account_file }}"
+    GCP_SCOPES: "{{gcp_scopes}}"
+
+  tasks:
+    # Add firewall rules for http
+    - name: "Create http firewall rule"
+      gce_net:
+        name: default
+        fwname: "default-allow-http"
+        allowed: "tcp:80"
+        state: "present"
+        src_range: "0.0.0.0/0"
+        project_id: "{{ gcp_project }}"
+        target_tags: "http-server"
+        credentials_file: "{{ gcp_service_account_file }}"
+        service_account_email: "{{ gcp_service_account_email }}"
+      when: cluster_state == "present"
+
+    # Add firewall rules for https
+    - name: "Create https firewall rule"
+      gce_net:
+        name: default
+        fwname: "default-allow-https"
+        allowed: "tcp:443"
+        state: "present"
+        src_range: "0.0.0.0/0"
+        project_id: "{{ gcp_project }}"
+        target_tags: "http-server"
+        credentials_file: "{{ gcp_service_account_file }}"
+        service_account_email: "{{ gcp_service_account_email }}"
+      when: cluster_state == "present"
+
+    # Create Persistent Disk
+    - name: Create Compute disk
+      gcp_compute_disk:
+        auth_kind: "{{gcp_auth_kind}}"
+        service_account_file: "{{ gcp_service_account_file }}"
+        scopes: "{{gcp_scopes}}"
+        zone: "{{ gcp_zone }}"
+        project: "{{ gcp_project }}"
+        name: "{{ persistent_disk_name }}"
+        size_gb: "{{ persistent_disk_size }}"
+        state: present
+      register: persistent_disk
+      when: cluster_state == "present"
+
+    # Create Boot Disk
+    - name: create a disk
+      gcp_compute_disk:
+        name: disk-instance
+        size_gb: 200
+        source_image: projects/click-to-deploy-images/global/images/pytorch-1-10-cu110-v20211105-debian-10
+        zone: "{{ gcp_zone }}"
+        project: "{{ gcp_project }}"
+        auth_kind: "{{ gcp_auth_kind }}"
+        service_account_file: "{{ gcp_service_account_file }}"
+        state: present
+      register: boot_disk
+
+    # Create Compute Instance
+    - name: Create instance
+      gcp_compute_instance:
+        name: "{{ machine_instance_name }}"
+        machine_type: "{{ machine_type }}"
+        guest_accelerators:
+          - accelerator_count: 1
+            accelerator_type: projects/{{ gcp_project}}/zones/{{ gcp_zone }}/acceleratorTypes/nvidia-tesla-p100
+        disks:
+          - auto_delete: true
+            boot: true
+            source: "{{ boot_disk }}"
+          - auto_delete: false
+            boot: false
+            source: "{{ persistent_disk }}"
+        metadata:
+            framework: "PyTorch:1.10"
+            install-nvidia-driver: "True"
+            shutdown-script: "/opt/deeplearning/bin/shutdown_script.sh"
+            status-config-url: "https://runtimeconfig.googleapis.com/v1beta1/projects/long-velocity-328818/configs/deeplearning-4-config"
+        network_interfaces:
+          - access_configs:
+              - name: "External NAT"
+                type: "ONE_TO_ONE_NAT"
+        tags:
+          items:
+            - http-server
+            - https-server
+        zone: "{{ gcp_zone }}"
+        project: "{{ gcp_project }}"
+        state: "{{ cluster_state }}"
+        scheduling:
+            automatic_restart: "no"
+            on_host_maintenance: "TERMINATE"
+      register: instance
+
+    - name: Wait for SSH to come up
+      wait_for: host={{ instance.networkInterfaces[0].accessConfigs[0].natIP }} port=22 delay=10 timeout=1000
+      when: cluster_state == "present"
+
+    - name: Add host to groupname
+      add_host: hostname={{ instance.networkInterfaces[0].accessConfigs[0].natIP }} groupname=new_instances
+      when: cluster_state == "present"
