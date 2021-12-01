@@ -30,11 +30,11 @@ Project Organization
 
 ## Frontend
 
-Users can upload an image that they wish to transform, along with text descriptions of the input and target images. After the models transform the input image using the text, the result is displayed on the frontend, below the original image. All of these features are displayed for the user using the frontend code, which can be found in *FILENAME*.
+Users can upload an image that they wish to transform, along with text descriptions of the input and target images. After the models transform the input image using the text, the result is displayed on the frontend, below the original image. All of these features are displayed for the user using react frontent, specifically with the Home component and the DataService.
 
 ## API
 
-The image and text descriptions which users enter into the frontend are passed to the backend using the API and used to transform the image. The API also allows outputs from the models to be passed back to the user through the frontend. The API code can be found in *FILENAME*
+The image and text descriptions which users enter into the frontend are passed to the backend using the API and used to transform the image. The API saves the output image on the backend and returns the path to the created image. The frontend component then submits a new API request for the image using the path (this is the same implementation used in Shivas's react tutorial). This implementation can be found in style-clip/api-service/model.py and service.py.
 
 ## Models
 
