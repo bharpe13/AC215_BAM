@@ -44,5 +44,27 @@ Another quirk is that due to the version of PyTorch/CUDA we're using, the contai
 
 The image transformation occurs through the coordination of several models. First photos are passed through an ‘RGB’ converter from the PIL module to standardize their format. Photos are then resized and passed through an encoder. StyleCLIP makes use of StyleGAN wic employs a specific encode built to perform image manipulation. It is this encoder which can easily be trained on photos of a wide variety of subjects. In conjunction with a CLIP model, specific text prompts are then mapped to specific directions in StyleGAN’s latent space. For uploaded images, which may not have a centered face, a pre-trained face finder aligns the face in the center of the image. 
 
+## Large Files:
+A few files are too large to upload so here are instructions to get them. We have local copies that we've been using to run, but couldn't upload to git.
+
+ffhq.pkl
+- Download from https://nvlabs-fi-cdn.nvidia.com/stylegan2/networks/stylegan2-ffhq-config-f.pkl
+- Rename as api/StyleCLIP/global_directions/model/ffhq.pkl
+
+ffhq npy files
+- Once the api-service container is up and running, exec into it.
+- cd to api/StyleCLIP/global_directions and run the following three commands:
+- python GetCode.py --dataset_name ffhq --code_type 'w' 
+- python GetCode.py --dataset_name ffhq --code_type 's' 
+- python GetCode.py --dataset_name ffhq --code_type 's_mean_std' 
+- This should create 3 files in api/StyleCLIP/global_directions/npy/ffhq
+
+dlib face predictor
+- Download from http://sourceforge.net/projects/dclib/files/dlib/v18.10/shape_predictor_68_face_landmarks.dat.bz2
+- Rename as api/encoder4editing/shape_predictor_68_face_landmarks.dat
+
+encoder weights
+- Download from https://drive.google.com/drive/u/1/folders/1DoxQhNgNV4FPgifsln8h0kPLkmKNVm9Z
+- Rename as api/encoder4editing/e4e_ffhq_encode.pt
 
 <p><small>Project based on the <a target="_blank" href="https://drivendata.github.io/cookiecutter-data-science/">cookiecutter data science project template</a>. #cookiecutterdatascience</small></p>
