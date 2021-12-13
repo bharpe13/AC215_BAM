@@ -52,6 +52,9 @@ const Header = (props) => {
                     </IconButton> */}
                     <Link to="/" className={classes.appLink}>
                         <Typography className={classes.appTitle} >
+                        <span class="material-icons">
+                            auto_fix_high
+                        </span>
                         Improved StyleCLIP
                         </Typography>
                     </Link>

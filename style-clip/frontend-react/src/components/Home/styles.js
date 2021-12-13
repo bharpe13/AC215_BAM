@@ -53,6 +53,14 @@ const styles = theme => ({
     poisonous: {
         color: "#de2d26",
     },
+    input: {
+        display: "block",
+        margin: "100px",
+    },
+    label: {
+        margin: "100px",
+        display: "block",
+    },
 });
 
 export default styles;
