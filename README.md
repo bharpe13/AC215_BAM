@@ -40,6 +40,7 @@ Project Organization
 - We can run our app using either the pre-trained weights, or with our model trained via transfer learning.
 - To change model, make sure the .pt file is uploaded to api-service/api/encoder4editing. Then, go into api-service/api/model.py and on line 39, change the model_path variable to the new model.
 - You'll then have to rebuild the api-service container, push to docker hub/GCR, and then edit deployment/deploy-k8s-cluster.yml on line 191 to have the link to the new container
+- Note that in order to do this, you'll also have to download all the big files to the api-service folder as described below.
 
 # Components
 
