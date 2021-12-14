@@ -6,7 +6,6 @@ Project Organization
       .
       ├── LICENSE
       ├── README.md
-      ├── models
       ├── style-clip
       │   ├── api-service
       │   ├── frontend-react
@@ -17,7 +16,9 @@ Project Organization
       │   ├── milestone1_BAM
       │   ├── milestone2_BAM
       │   ├── milestone3_BAM
-      └── notebooks
+      ├── notebooks
+      └── ├── training_notebook.ipynb
+      
 
 --------
 
