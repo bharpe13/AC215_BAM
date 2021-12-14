@@ -58,7 +58,7 @@ const Home = (props) => {
     }
 
     const handleOnChange = (event) => {
-        setImage(URL.createObjectURL(event.target.files[0]));
+        setImage(event.target.files[0]);
     }
 
     const handleOnClick = () => {
@@ -102,7 +102,7 @@ const Home = (props) => {
                                 ref={inputFile}
                                 onChange={(event) => handleOnChange(event)}
                                 />
-                                <div> <img className={classes.preview} src={image} /></div>
+                                <div> <img className={classes.preview} src={URL.createObjectURL(image)} /></div>
                                 <Typography className={classes.help}>Click to take a picture or upload...</Typography>
                             </Grid>
                             <Grid item md={5}>
