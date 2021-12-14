@@ -32,6 +32,7 @@ const styles = theme => ({
         backgroundImage: "url('https://storage.googleapis.com/ac215_project_buket/snipsnip.jpg')",
         backgroundRepeat: "no-repeat",
         backgroundPosition: "center",
+        backgroundColor: "transparent",
         minHeight: "400px",
     },
     fileInput: {
