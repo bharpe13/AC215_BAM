@@ -70,32 +70,6 @@ img_transforms = EXPERIMENT_ARGS['transform']
 def run_on_batch(inputs, net):
     images, latents = net(inputs.to(device).float(), randomize_noise=False, return_latents=True)
     return images, latents
-# def load_preprocess_image_from_path(image_path):
-#     print("Image", image_path)
-
-#     image_width = 224
-#     image_height = 224
-#     num_channels = 3
-
-#     # Prepare the data
-#     def load_image(path):
-#         image = tf.io.read_file(path)
-#         image = tf.image.decode_jpeg(image, channels=num_channels)
-#         image = tf.image.resize(image, [image_height, image_width])
-#         return image
-
-#     # Normalize pixels
-#     def normalize(image):
-#         image = image / 255
-#         return image
-
-#     test_data = tf.data.Dataset.from_tensor_slices(([image_path]))
-#     test_data = test_data.map(load_image, num_parallel_calls=AUTOTUNE)
-#     test_data = test_data.map(normalize, num_parallel_calls=AUTOTUNE)
-#     test_data = test_data.repeat(1).batch(1)
-
-#     return test_data
-
 
 def make_prediction(image_path, neutral, target):
     original_image = Image.open(image_path)
