@@ -28,8 +28,6 @@ fs3=np.load('./api/StyleCLIP/global_directions/npy/ffhq/fs3.npy')
 
 
 local_experiments_path = "/persistent"
-best_model = "e4e_ffhq_encode.pt"
-best_model_id = None
 prediction_model = None
 data_details = None
 image_width = 224
