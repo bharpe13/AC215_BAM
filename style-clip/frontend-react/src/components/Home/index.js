@@ -143,7 +143,7 @@ const Home = (props) => {
                                 justifyContent: 'center'
                             }}>
                                 <Typography variant="h6" style={{ marginRight: '10px' }}> Click the magic wand to run! </Typography>
-                                <Icon className={classes.stopRecording} fontSize="large" color='secondary' onClick={(event) => handleOnClick(event)}>auto_fix_high_icon</Icon>
+                                <Icon className={classes.stopRecording} fontSize="large" color='secondary' onClick={() => handleOnClick()}>auto_fix_high_icon</Icon>
                             </div>  
                    <div>
 
