@@ -60,7 +60,7 @@ const Home = (props) => {
     const handleOnChange = (event) => {
         let error = '';
         console.log(event.target.files);
-        if (event.target.files[0] == null){
+        if (event.target.value == null){
             error = "No image uploaded"
         }
         else {
@@ -112,7 +112,7 @@ const Home = (props) => {
                             ref={inputFile}
                             onChange={(event) => handleOnChange(event)}
                         />
-                        <div><img className={classes.preview} src={image} /></div>
+                        <div> <img className={classes.preview} src={image} /></div>
                         <Typography className={classes.help}>Click to take a picture or upload...</Typography>
                     </div>
                     {/* <form>
