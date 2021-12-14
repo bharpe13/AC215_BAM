@@ -1,7 +1,7 @@
-# Use the official Debian-hosted Python image
-# FROM python:3.8-slim-buster
+# Use an image with CUDA pre-installed
 FROM nvidia/cuda:11.4.1-cudnn8-runtime-ubuntu18.04
 
+# List of needed packages
 ARG DEBIAN_PACKAGES="build-essential git unzip wget ffmpeg libsm6 libxext6 python3.6-dev cuda-command-line-tools-11-4 nvidia-cuda-toolkit" 
 
 # Prevent apt from showing prompts
@@ -21,8 +21,10 @@ ENV PYTHON_PIP_VERSION=20.1.1
 ENV PYTHON_GET_PIP_URL=https://github.com/pypa/get-pip/raw/eff16c878c7fd6b688b9b4c4267695cf1a0bf01b/get-pip.py
 ENV PYTHON_GET_PIP_SHA256=b3153ec0cf7b7bbf9556932aa37e4981c35dc2a2c501d70d91d2795aa532be79
 
+# Set CUDA_HOME
 ENV CUDA_HOME=/usr/local/cuda
 
+# Make sure CUDA is added to PATH
 ENV LD_LIBRARY_PATH=/usr/local/cuda/extras/CUPTI/lib64:/usr/local/cuda/lib64:$LD_LIBRARY_PATH
 
 # Ensure we have an up to date baseline, install dependencies and
@@ -46,6 +48,7 @@ RUN set -ex; \
     mkdir -p /app && \
     chown app:app /app
 
+# Install additional dependencies
 RUN \
     wget https://github.com/ninja-build/ninja/releases/download/v1.8.2/ninja-linux.zip && \
     unzip ninja-linux.zip -d /usr/local/bin/ && \
@@ -61,8 +64,7 @@ WORKDIR /app
 # Install python packages
 ADD --chown=app:app Pipfile Pipfile.lock /app/
 
-# ADD --chown=app:app persistent-folder/e4e_ffhq_encode /app/persistent/
-
+# Install extra python packages - most don't work with pipenv install, so need to pipenv run pip install
 RUN pipenv sync
 RUN \
     pipenv run pip install ftfy regex tqdm && \

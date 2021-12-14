@@ -1,30 +1,42 @@
-AC215-Template
+BAM - Improved StyleCLIP
 ==============================
-
-AC215
 
 Project Organization
 ------------
       .
       ├── LICENSE
-      ├── Makefile
       ├── README.md
-      ├── models
-      ├── notebooks
-      ├── references
-      ├── requirements.txt
-      ├── setup.py
-      ├── src
-      │   ├── __init__.py
-      │   └── build_features.py
+      ├── style-clip
+      │   ├── api-service
+      │   ├── frontend-react
+      │   ├── deployment
+      │   ├── persistent-folder
+      │   ├── secrets
       ├── submissions
-      │   ├── milestone1_groupname
-      │   ├── milestone2_groupname
-      │   ├── milestone3_groupname
-      │   └── milestone4_groupname
-      └── test_project.py
+      │   ├── milestone1_BAM
+      │   ├── milestone2_BAM
+      │   ├── milestone3_BAM
+      ├── notebooks
+      └── ├── training_notebook.ipynb
+      
 
 --------
+
+# How to Run
+
+- cd into Deployment, run sh docker-shell.sh
+- Follow same instructions as mushroom app to setup inventory.yml to work with your GCP account
+- Run ansible-playbook deploy-k8s-cluster.yml -i inventory.yml --extra-vars cluster_state=present
+- This will pull the frontend and api-service containers from docker hub and create a single cluster with a P100 GPU. We need a GPU with a compute capability score of at least 5.2 and the P100 is the cheapest that works. I've found the most success running in europe-west1-b, but it's still fairly inconsistent.
+- Once the script has run, it will still take a while for the api container to get set up (it's like a 20GB container), you can check progress in the GCP console.
+- Then simply access the app using the ingress IP printed out in the terminal with sslip.io.
+
+# Using a custom model
+
+- We can run our app using either the pre-trained weights, or with our model trained via transfer learning.
+- To change model, make sure the .pt file is uploaded to api-service/api/encoder4editing. Then, go into api-service/api/model.py and on line 39, change the model_path variable to the new model.
+- You'll then have to rebuild the api-service container, push to docker hub/GCR, and then edit deployment/deploy-k8s-cluster.yml on line 191 to have the link to the new container
+- Note that in order to do this, you'll also have to download all the big files to the api-service folder as described below.
 
 # Components
 
