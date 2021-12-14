@@ -37,6 +37,30 @@ class Coach:
         # Initialize network
         self.net = pSp(self.opts).to(self.device)
 
+        frozen_layers = [('encoder', 'input_layer'),
+                         ('encoder', 'body'),
+                        #  ('encoder', 'styles'),
+                         ('encoder', 'latlayer1'),
+                         ('encoder', 'latlayer2'),
+                         ('decoder', 'style'),
+                         ('decoder', 'input'),
+                         ('decoder', 'conv1'),
+                         ('decoder', 'to_rgb1'),
+                         ('decoder', 'convs'),
+                         ('decoder', 'upsamples'),
+                         ('decoder', 'to_rgbs'),
+                         ('decoder', 'noises')]
+
+        for name, child in self.net.named_children():
+            for gname, gchild in child.named_children():
+                print(f'{name}: {gname} | Frozen = {(name, gname) in frozen_layers}')
+
+        for name, child in self.net.named_children():
+            for gname, gchild in child.named_children():
+                if (name, gname) in frozen_layers:
+                    for param in gchild.parameters():
+                        param.requires_grad = False
+
         # Initialize loss
         if self.opts.lpips_lambda > 0:
             self.lpips_loss = LPIPS(net_type=self.opts.lpips_type).to(self.device).eval()
