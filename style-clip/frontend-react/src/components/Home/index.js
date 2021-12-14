@@ -58,37 +58,25 @@ const Home = (props) => {
     }
 
     const handleOnChange = (event) => {
+        setImage(URL.createObjectURL(event.target.files[0]));
+    }
+
+    const handleOnClick = () => {
         let error = '';
-        console.log(event.target.files);
-        if (event.target.value == null){
+        console.log(image);
+        if (image == null){
             error = "No image uploaded"
         }
         else {
-            setImage(URL.createObjectURL(event.target.files[0]));
 
             var formData = new FormData();
-            formData.append("file", event.target.files[0]);
+            formData.append("file", image);
             formData.append("neutral", baseText);
             formData.append("target", transformText);
-            // console.log(baseText);
-            // console.log(transformText)
-            // setNewimage(URL.createObjectURL(event.target.files[0]));
             DataService.Predict(formData)
                 .then(function (response) {
                     console.log(response.data);
-                    // setPrediction(response.data);
                     setNewimage(response.data);
-                    // if (transformText == "A face with glasses") {
-                    //     setTimeout(function(){
-                    //         setNewimage(michael);
-                    //     }, 2000);
-                    // }
-                    // if (transformText == "A face with blonde hair") {
-                    //     setTimeout(function(){
-                    //         setNewimage(alex);
-                    //     }, 2000);
-                    // }
-                    
                 })
         }
         
@@ -115,18 +103,6 @@ const Home = (props) => {
                         <div> <img className={classes.preview} src={image} /></div>
                         <Typography className={classes.help}>Click to take a picture or upload...</Typography>
                     </div>
-                    {/* <form>
-                        <label>
-                            Enter Neutral Text:
-                        </label>
-                            <input type="text" value={baseText} onChange={handleBaseTextChange} />
-                        
-
-                        <label>
-                            Enter Transformation Text:
-                        </label>
-                            <input type="text" value={transformText} onChange={handleTransformTextChange} />
-                    </form> */}
                    
                         <Grid container spacing={4} direction="row" justify="center" alignItems="center">
                         <Grid item md={5}>
@@ -139,7 +115,7 @@ const Home = (props) => {
                                 variant="outlined"
                                 fullWidth
                                 value={baseText}
-                                onChange={handleBaseTextChange}
+                                onChange={(event) => handleBaseTextChange(event)}
                             />
                             <br />
                             <br />
@@ -153,7 +129,7 @@ const Home = (props) => {
                                 variant="outlined"
                                 fullWidth
                                 value={transformText}
-                                onChange={handleTransformTextChange}
+                                onChange={(event) => handleTransformTextChange(event)}
                             />
                             <br />
                             <br />
@@ -167,7 +143,7 @@ const Home = (props) => {
                                 justifyContent: 'center'
                             }}>
                                 <Typography variant="h6" style={{ marginRight: '10px' }}> Click the magic wand to run! </Typography>
-                                <Icon className={classes.stopRecording} fontSize="large" color='secondary' onClick={handleOnChange}>auto_fix_high_icon</Icon>
+                                <Icon className={classes.stopRecording} fontSize="large" color='secondary' onClick={(event) => handleOnClick(event)}>auto_fix_high_icon</Icon>
                             </div>  
                    <div>
 
