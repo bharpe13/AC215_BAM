@@ -31,7 +31,10 @@ const Theme = createMuiTheme({
             color: "#A41034",
             fontSize: "1.1rem",
             fontFamily: "Roboto, Helvetica, Arial, sans-serif",
-            fontWeight: 800
+            fontWeight: 800,
+            alignText: "center",
+            textAlign: "center",
+            justifyText: "center",
         },
         h5: {
             color: "#A41034",

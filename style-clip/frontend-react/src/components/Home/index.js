@@ -59,7 +59,6 @@ const Home = (props) => {
 
     const handleOnChange = (event) => {
         setImage(event.target.files[0]);
-        setNewimage(event.target.files[0]);
     }
 
     const handleOnClick = () => {
@@ -147,8 +146,10 @@ const Home = (props) => {
 
                         
                         
-                    </div>   
+                    </div> 
+
                     
+
                     <div>
                         {error && (
                                 <Typography variant="h6" color="secondary" justify="center" gutterBottom>{error}</Typography>
@@ -202,7 +203,7 @@ const Home = (props) => {
                                 justifyContent: 'center'
                             }}>
                                 <Typography variant="h6" style={{ marginRight: '10px' }}> Click the magic wand to run! </Typography>
-                                <Icon className={classes.stopRecording} fontSize="large" color='secondary' onClick={() => handleOnClick()}>auto_fix_high_icon</Icon>
+                                <Icon className={classes.stopRecording} fontSize="large" color='secondary' style={{cursor: "pointer"}} onClick={() => handleOnClick()}>auto_fix_high_icon</Icon>
                             </div>  
                    <div>
 
