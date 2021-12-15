@@ -59,7 +59,6 @@ const Home = (props) => {
 
     const handleOnChange = (event) => {
         setImage(event.target.files[0]);
-        setNewimage(event.target.files[0]);
     }
 
     const handleOnClick = () => {
@@ -127,18 +126,15 @@ const Home = (props) => {
                                         onChange={(event) => handleOnChange(event)}
                                         />
                                     <div> <img className={classes.photo} src={URL.createObjectURL(image)} /></div>
-                                    <Typography className={classes.help}>Click to take a picture or upload...</Typography>
+                                    <Typography className={classes.help}>Click to upload a picture</Typography>
 
                                 </Grid>
                                 <Grid item md={5}>
                                     <Card>
-                                        {newimage && (
-                                            <CardMedia
-                                                className={classes.photo}
-                                                image={DataService.GetImage(newimage.image)}
-                                                title="New image"
-                                            />
-                                        )}
+                                        <img
+                                            className={classes.photo}
+                                            src={DataService.GetImage(newimage.image)}
+                                        />
                                     </Card>
                                 </Grid>
                             </Grid>
