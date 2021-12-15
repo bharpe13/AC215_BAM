@@ -59,6 +59,7 @@ const Home = (props) => {
 
     const handleOnChange = (event) => {
         setImage(event.target.files[0]);
+
     }
 
     const handleOnClick = () => {
@@ -89,21 +90,43 @@ const Home = (props) => {
 
                     <Typography variant="h3" color="secondary" gutterBottom>Try it Yourself! </Typography>
                     <div className={classes.dropzone} onClick={() => handleImageUploadClick()}>
+                           {!newimage && (
+                               <div>
+                               <input
+                               type="file"
+                               accept="image/*"
+                               capture="camera"
+                               on
+                               autocomplete="off"
+                               tabindex="-1"
+                               className={classes.fileInput}
+                               ref={inputFile}
+                               onChange={(event) => handleOnChange(event)}
+                               />
+                                <div> {image && <img className={classes.preview} src={URL.createObjectURL(image)} />}</div>
+                                <Typography className={classes.help}>Click to take a picture or upload...</Typography>
+                               </div>
+                           )} 
+                        
+                        
+                        {newimage && (
                         <Grid container spacing={4} direction="row" justify="center" alignItems="center">
                             <Grid item md={5}>
-                                <input
-                                type="file"
-                                accept="image/*"
-                                capture="camera"
-                                on
-                                autocomplete="off"
-                                tabindex="-1"
-                                className={classes.fileInput}
-                                ref={inputFile}
-                                onChange={(event) => handleOnChange(event)}
-                                />
+                                
+                                    <input
+                                    type="file"
+                                    accept="image/*"
+                                    capture="camera"
+                                    on
+                                    autocomplete="off"
+                                    tabindex="-1"
+                                    className={classes.fileInput}
+                                    ref={inputFile}
+                                    onChange={(event) => handleOnChange(event)}
+                                    />
                                 <div> <img className={classes.preview} src={URL.createObjectURL(image)} /></div>
                                 <Typography className={classes.help}>Click to take a picture or upload...</Typography>
+
                             </Grid>
                             <Grid item md={5}>
                                 <Card>
@@ -117,6 +140,10 @@ const Home = (props) => {
                                 </Card>
                             </Grid>
                         </Grid>
+                                
+                        )}
+                            
+                        
                         
                     </div>
                    
