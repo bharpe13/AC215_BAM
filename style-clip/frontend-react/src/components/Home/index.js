@@ -72,6 +72,7 @@ const Home = (props) => {
 
             var formData = new FormData();
             setRunning("Running")
+            setError(null)
             formData.append("file", image);
             formData.append("neutral", baseText);
             formData.append("target", transformText);
