@@ -45,14 +45,14 @@ const Home = (props) => {
 
     const handleBaseTextChange = (event) => {
         if (!event.target.value) {
-            setError("Field cannot be empty")
+            setError("Field cannot be empty");
         }
         setBaseText(event.target.value);
     }
 
     const handleTransformTextChange = (event) => {
         if (!event.target.value) {
-            setError("Field cannot be empty")
+            setError("Field cannot be empty");
         }
         setTransformText(event.target.value);
     }
@@ -62,10 +62,12 @@ const Home = (props) => {
     }
 
     const handleOnClick = () => {
-        let error = '';
         console.log(image);
-        if (image == null){
+        if (!image){
             setError("No image uploaded")
+        }
+        else if (!baseText || !transformText){
+            setError("Field cannot be empty");
         }
         else {
 
