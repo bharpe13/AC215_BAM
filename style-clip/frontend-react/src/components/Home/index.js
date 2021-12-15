@@ -82,6 +82,7 @@ const Home = (props) => {
                     console.log(response.data);
                     setNewimage(response.data);
                 })
+            setRunning(null)
         }
         
     }
