@@ -38,6 +38,8 @@ Project Organization
 - You'll then have to rebuild the api-service container, push to docker hub/GCR, and then edit deployment/deploy-k8s-cluster.yml on line 191 to have the link to the new container
 - Note that in order to do this, you'll also have to download all the big files to the api-service folder as described below.
 
+- You can find two versions of our transfer-learned models here: https://drive.google.com/file/d/1xTvDYu66VEDMwCOPqtp-AS696Du_E6tA/view?usp=sharing
+
 # Components
 
 ## Frontend
